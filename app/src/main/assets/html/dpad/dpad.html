@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="https://production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico">
+  <link rel="mask-icon" type="" href="https://production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111">
+  <title>CodePen - CSS + Canvas Game System</title>
+  <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:600italic" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+  
+      <style>
+      * {
+  box-sizing: border-box;
+}
+
+body {
+  background: #bcbdc2;
+  font-family: 'Source Sans Pro', Verdana, Arial, sans-serif;
+  font-size: 16px;
+}
+@media screen and (min-width: 220px) {
+  body {
+    font-size: 18px;
+  }
+}
+@media screen and (min-width: 240px) {
+  body {
+    font-size: 20px;
+  }
+}
+@media screen and (min-width: 260px) {
+  body {
+    font-size: 22px;
+  }
+}
+@media screen and (min-width: 280px) {
+  body {
+    font-size: 24px;
+  }
+}
+@media screen and (min-width: 300px) {
+  body {
+    font-size: 26px;
+  }
+}
+@media screen and (min-width: 320px) {
+  body {
+    font-size: 28px;
+  }
+}
+@media screen and (min-width: 340px) {
+  body {
+    font-size: 30px;
+  }
+}
+@media screen and (min-width: 360px) {
+  body {
+    font-size: 32px;
+  }
+}
+@media screen and (min-width: 380px) {
+  body {
+    font-size: 34px;
+  }
+}
+@media screen and (min-width: 400px) {
+  body {
+    font-size: 36px;
+  }
+}
+@media screen and (min-width: 420px) {
+  body {
+    font-size: 38px;
+  }
+}
+@media screen and (min-width: 440px) {
+  body {
+    font-size: 40px;
+  }
+}
+
+.system {
+  float: left;
+  padding: 1em;
+  padding-bottom: 2em;
+}
+
+.screen-border {
+  background: #636c7b;
+  padding: .5em 1em;
+  border-radius: .25em .25em 1em .25em;
+}
+
+.screen {
+  background: #eee;
+  width: 320px;
+  max-width: 100%;
+}
+
+.controls {
+  position: relative;
+  padding-bottom: 3em;
+}
+
+.button {
+  cursor: pointer;
+  box-shadow: 0 0 3px 1px #555;
+  color: #474881;
+  text-align: center;
+}
+.button:hover {
+  box-shadow: 0 0 5px 1px #333;
+}
+.button:active {
+  box-shadow: 0 0 5px 1px #333 inset;
+}
+.button .label {
+  font-size: .4em;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.system-name {
+  color: #474881;
+  font-style: italic;
+  font-weight: bold;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  font-size: .4em;
+  padding-top: .5em;
+  padding-bottom: 2em;
+}
+
+.d-pad {
+  width: 3em;
+  height: 3em;
+  position: relative;
+}
+
+.d {
+  width: 1em;
+  height: 1em;
+  background: #1d2323;
+  position: absolute;
+  border-top: 0.05em solid #7b9191;
+  border-bottom: 0.05em solid black;
+}
+.d:hover, .d:active {
+  background: #404d4d;
+}
+
+.up {
+  left: 1em;
+  top: 0;
+  border-radius: .25em .25em 0 0;
+}
+.up .label {
+  top: -3em;
+}
+
+.right {
+  top: 1em;
+  right: 0;
+  border-radius: 0 .25em .25em 0;
+}
+.right .label {
+  top: -1em;
+  right: -2em;
+}
+
+.down {
+  left: 1em;
+  bottom: 0;
+  border-radius: 0 0 .25em .25em;
+}
+.down .label {
+  bottom: -1em;
+}
+
+.left {
+  top: 1em;
+  left: 0;
+  border-radius: .25em 0 0 .25em;
+}
+.left .label {
+  top: -1em;
+  left: -2em;
+}
+
+.control-buttons {
+  position: absolute;
+  right: 0;
+  top: 2em;
+  background: #afb2b6;
+  border-radius: 2em;
+}
+
+.control {
+  background: #79215b;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 1.5em;
+  float: right;
+  margin: .25em;
+  border-top: 0.05em solid #de88c1;
+  border-bottom: 0.05em solid #290b1f;
+}
+.control:hover, .control:active {
+  background: #8d266a;
+}
+.control .label {
+  bottom: -3em;
+}
+
+.meta-buttons {
+  position: absolute;
+  background: #afb2b6;
+  top: 6em;
+  left: 2.5em;
+  border-radius: 2em;
+}
+
+.meta {
+  background: #717b85;
+  width: 1.8em;
+  height: .5em;
+  border-radius: .4em;
+  float: right;
+  margin: .25em;
+  border-top: 0.05em solid #8c959d;
+  border-bottom: 0.05em solid #5a6269;
+}
+.meta:hover, .meta:active {
+  background: #7e8891;
+}
+.meta .label {
+  bottom: -.6em;
+}
+
+.message {
+  font-size: .5em;
+  color: #474881;
+  font-style: italic;
+}
+
+.control-key {
+  padding: 1.6em;
+  font-size: .4em;
+  float: left;
+  border: 1px solid #474881;
+  color: #474881;
+}
+.control-key ul {
+  padding-left: 2em;
+}
+
+    </style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+
+</head>
+
+<body translate="no">
+
+  <div class="system">
+  <div class="screen-border">
+    <canvas id="easel" class="screen" width="640" height="560"></canvas>
+  </div>
+  <div class="controls">
+    <h1 class="system-name">Create JS</h1>
+    <div class="d-pad">
+      <div id="d-up" class="button d up"><span class="label">▲</span></div>
+      <div id="d-right" class="button d right"><span class="label">▶</span></div>
+      <div id="d-down" class="button d down"><span class="label">▼</span></div>
+      <div id="d-left" class="button d left"><span class="label">◀</span></div>
+    </div>
+    <div class="control-buttons">
+      <div id="control-a" class="button control a"><span class="label">A</span></div>
+      <div id="control-b" class="button control b"><span class="label">B</span></div>
+    </div>
+    <div class="meta-buttons">
+      <div id="meta-start" class="button meta start"><span class="label">Start</span></div>
+      <div id="meta-select" class="button meta select"><span class="label">Select</span></div>
+    </div>
+  </div>
+	</div>
+    <script src="//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js"></script>
+
+  <script src="http://code.createjs.com/createjs-2013.05.14.min.js"></script>
+
+    <script>
+    var canvas = document.getElementById("easel"),
+  stage = new createjs.Stage(canvas),
+  centerX = canvas.width/2,
+  centerY = canvas.height/2,
+  background = new createjs.Shape(),
+  logo = new createjs.Bitmap("http://samuelloveland.com/files/pokemon/_assets/images/logo.png"),
+  tagline = new createjs.Bitmap("http://samuelloveland.com/files/pokemon/_assets/images/tagline.png"),
+  pressStart = new createjs.Text("PRESS START", "30px Verdana", "#000000");
+
+
+// Place Logo
+logo.x = 0;
+logo.y = 0;
+logo.alpha = 0.05;
+
+// Place Tagline
+tagline.x = 0;
+tagline.y = 0;
+tagline.alpha = 0.005;
+
+// Place "Press Start"
+pressStart.x = centerX;
+pressStart.y = centerY+120;
+pressStart.textAlign = 'center';
+pressStart.alpha = 0.005;
+
+// Black background
+background.graphics.beginFill('#000000').drawRect(0, 0, canvas.width, canvas.height);
+
+// Add items to Canvas
+stage.addChild(background);
+stage.addChild(logo);
+stage.addChild(tagline);
+stage.addChild(pressStart);
+stage.update();
+
+// Animate items on Canvas
+createjs.Tween.get(logo).wait().to({alpha:1}, 3000); // Logo fades in
+createjs.Tween.get(background).wait().to({alpha: 0}, 1000); // Black background fades out
+createjs.Tween.get(tagline).wait(2500).to({alpha: 1}, 500); // Tagline fades in
+createjs.Ticker.setFPS(30);
+createjs.Tween.get(pressStart).wait(4000).to({alpha: 1}, 200).wait(800).call(onComplete); // Press Start fades in and blinks
+
+function onComplete() {
+  createjs.Tween.get(pressStart, {loop:true}, true)
+  .to({alpha: 0}, 200).wait(600).to({alpha: 1}, 200).wait(800);
+}
+
+createjs.Ticker.addListener(function() {
+  stage.update();
+	});
+  //# sourceURL=pen.js
+  </script>
+
+
+<script src="jquery-3.2.0.min.js"></script>
+<script>
+$(document).ready(function(){
+  console.log("clicked");
+    $.get("http://192.168.31.183:18283/send_key/?key_code=22",function(data,status){
+      console.log("数据：" + data + "\n状态：" + status);
+    });
+  $("d-right").click(function(){
+    console.log("clicked");
+    $.get("http://192.168.31.183:18283/send_key/?key_code=22",function(data,status){
+      console.log("数据：" + data + "\n状态：" + status);
+    });
+  });
+});
+</script>
+  
+  
+
+
+
+ </body></html>
